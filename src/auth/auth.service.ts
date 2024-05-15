@@ -33,11 +33,14 @@ export class AuthService {
             }
 
             // Step 3: Generate a JWT containing the user's ID and return it
+            const payload = user.id;
             const accessToken = this.jwtService.sign({ userId: user.id });
+            const refreshToken = this.jwtService.sign({ userId: user.id }, { expiresIn: '7d' });
 
             return {
                 user: user,
                 accessToken: accessToken,
+                refreshToken: refreshToken,
             };
         } catch (error) {
             throw new Error(`Authentication failed: ${error.message}`);

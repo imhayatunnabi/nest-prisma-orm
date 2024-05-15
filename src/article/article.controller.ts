@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -24,19 +24,19 @@ export class ArticleController {
 
   @Get(':id')
   @ApiOkResponse({ type: ArticleEntity, isArray: true })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.articleService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: ArticleEntity })
-  update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateArticleDto: UpdateArticleDto) {
     return this.articleService.update(+id, updateArticleDto);
   }
 
   @Delete(':id')
   @ApiOkResponse({ type: ArticleEntity })
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.articleService.remove(+id);
   }
 }

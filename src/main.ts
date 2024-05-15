@@ -9,7 +9,18 @@ async function bootstrap() {
     .setTitle('Nest Js Prisma API Documentation')
     .setDescription('Nest Js Prima API Documentation With Swagger')
     .setVersion('0.0.1')
+    .addBearerAuth(
+      {
+        description: `[just text field] Please enter token in following format: Bearer <JWT>`,
+        name: 'Authorization',
+        bearerFormat: 'Bearer',
+        scheme: 'Bearer',
+        type: 'http',
+        in: 'Header'
+      },
+    )
     .build();
+
   // validation pipes
   app.useGlobalPipes(new ValidationPipe());
   // Use the ClassSerializerInterceptor to remove a field from the response

@@ -13,10 +13,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
             }
         );
     }
-    async validate(email: string, password: string) {
-        const user = await this.authService.login(email, password);
-        if (!user) {
-            throw new UnauthorizedException(`User with ${email} does not authenticateable`);
-        }
+    async validate(payload: any) {
+        return { user: payload.sub, username: payload.username };
     }
 }

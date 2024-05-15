@@ -1,15 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty } from "class-validator";
 
 export class CreateArticleDto {
-    @ApiProperty()
+    @ApiProperty({ required: true })
+    @IsNotEmpty()
     title: string;
 
-    @ApiProperty({ required: false })
+    @IsNotEmpty()
+    @ApiProperty({ required: true })
     description?: string;
 
-    @ApiProperty()
+    @IsNotEmpty()
+    @ApiProperty({ required: true })
     body: string;
 
+    @IsNotEmpty()
     @ApiProperty({ required: false, default: false })
     published?: boolean = false;
 }

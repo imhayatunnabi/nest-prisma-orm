@@ -4,6 +4,9 @@ import { Article } from "@prisma/client";
 export class ArticleEntity implements Article {
     @ApiProperty()
     id: number;
+    
+    @ApiProperty({ required: false, nullable: true })
+    authorId: number | null;
 
     @ApiProperty()
     title: string;

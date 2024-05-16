@@ -18,7 +18,7 @@ import { MailService } from './mail.service';
           port: 465,
           auth: {
             user: 'nest@neuralwebx.com',
-            pass: '4TIL0CQJK1GQ',
+            pass: 'Nest@2024',
           },
         },
         defaults: {

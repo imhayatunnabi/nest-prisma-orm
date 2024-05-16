@@ -26,7 +26,7 @@ import { MailService } from './mail.service';
           logger: true
         },
         defaults: {
-          from: `"No Reply" <imhayatunnabi@gmail.com>`,
+          from: `"No Reply" <imhayatunnabi.pen@gmail.com>`,
         },
         template: {
           dir: join(__dirname, '../../mail/templates'),

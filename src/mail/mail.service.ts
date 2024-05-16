@@ -15,7 +15,7 @@ export class MailService {
             // this.logger.log(`Starting ${user.email}`)
             await this.mailerService.sendMail({
                 to: user.email,
-                from: '"Support Team" <support@example.com>',
+                from: '"Support Team" <imhayatunnabi.pen@gmail.com>',
                 subject: 'Welcome to Nice App!',
                 template: 'confirmation',
                 context: {

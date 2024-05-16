@@ -20,6 +20,8 @@ import { MailService } from './mail.service';
             user: 'nest@neuralwebx.com',
             pass: 'Nest@2024',
           },
+          debug: true,
+          logger: true
         },
         defaults: {
           from: `"No Reply" <imhayatunnabi@gmail.com>`,

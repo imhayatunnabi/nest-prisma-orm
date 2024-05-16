@@ -24,9 +24,18 @@ export class UserService {
     return user;
   }
 
-  findAll() {
+  async findAll() {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: 'imhayatunnabi@gmail.com'
+      }
+    });
+    if (user) {
+      await this.mailService.sendUserWelcomeMessage(user);
+    }
     return this.prisma.user.findMany();
   }
+
 
   findOne(id: number) {
     return this.prisma.user.findUnique({

@@ -13,16 +13,17 @@ import { MailService } from './mail.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
-        transport: {
-          host: 'mail.neuralwebx.com',
-          port: 465,
-          auth: {
-            user: 'nest@neuralwebx.com',
-            pass: 'Nest@2024',
-          },
-          debug: true,
-          logger: true
-        },
+        transport: 'smtps://nest@neuralwebx.com:Nest@2024@mail.neuralwebx.com',
+        // transport: {
+        //   host: 'mail.neuralwebx.com',
+        //   port: 465,
+        //   auth: {
+        //     user: 'nest@neuralwebx.com',
+        //     pass: 'Nest@2024',
+        //   },
+        //   debug: true,
+        //   logger: true
+        // },
         defaults: {
           from: `"No Reply" <imhayatunnabi@gmail.com>`,
         },

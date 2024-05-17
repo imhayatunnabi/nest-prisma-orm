@@ -23,10 +23,10 @@ export class UserService {
       apiKey: process.env.MAILERSEND_API_KEY,
     });
 
-    const sentFrom = new Sender("imhayatunnabi.pen@gmail.com", "Your name");
+    const sentFrom = new Sender("imhayatunnabi.pen@gmail.com", "Hayatunnabi Nabil Nest Prisma Server");
 
     const recipients = [
-      new Recipient("imhayatunnabi.pen@gmail.com", "Your Client")
+      new Recipient("imhayatunnabi.pen@gmail.com", "Hayatunnabi Nabil Nest Prisma Client")
     ];
 
     const emailParams = new EmailParams()

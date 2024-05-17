@@ -20,7 +20,7 @@ const storage = diskStorage({
   },
 });
 @Controller('user')
-@ApiTags('users')
+@ApiTags('Users')
 export class UserController {
   constructor(private readonly userService: UserService) { }
 

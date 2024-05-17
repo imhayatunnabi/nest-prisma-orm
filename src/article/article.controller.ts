@@ -7,7 +7,7 @@ import { ArticleEntity } from './entities/article.entity';
 import { JwtGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @Controller('article')
-@ApiTags('articles')
+@ApiTags('Articles')
 @UseGuards(JwtGuard)
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) { }

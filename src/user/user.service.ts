@@ -19,16 +19,18 @@ export class UserService {
         password: hashedPassword,
       },
     });
+    return user;
+  }
+
+  async findAll() {
+    /* email sending configuration start */
     const mailerSend = new MailerSend({
       apiKey: process.env.MAILERSEND_API_KEY,
     });
-
     const sentFrom = new Sender("imhayatunnabi.pen@gmail.com", "Hayatunnabi Nabil Nest Prisma Server");
-
     const recipients = [
       new Recipient("imhayatunnabi.pen@gmail.com", "Hayatunnabi Nabil Nest Prisma Client")
     ];
-
     const emailParams = new EmailParams()
       .setFrom(sentFrom)
       .setTo(recipients)
@@ -36,13 +38,9 @@ export class UserService {
       .setSubject("This is a Subject")
       .setHtml("<strong>This is the HTML content</strong>")
       .setText("This is the text content");
-
     await mailerSend.email.send(emailParams);
+    /* email sending configuration end */
 
-    return user;
-  }
-
-  async findAll() {
     return this.prisma.user.findMany();
   }
 

@@ -16,12 +16,16 @@ export class UserEntity implements User {
     email: string;
 
     @ApiProperty({ required: true, nullable: false })
+    image: string;
+
+    @ApiProperty({ required: true, nullable: false })
+    @Exclude()
     password: string;
 
     @ApiProperty()
     createdAt: Date;
 
-    @Exclude()
+    @ApiProperty()
     updatedAt: Date;
 
 }

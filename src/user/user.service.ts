@@ -20,6 +20,14 @@ export class UserService {
         password: hashedPassword,
       },
     });
+    /* email sending configuration start */
+    const subject = "Your account created successfully";
+    const htmlContent = "<strong>This is the HTML content</strong>";
+    const textContent = "This is the text content";
+    const toEmail = user.email;
+    const toName = user.name;
+    await this.mailService.sendEmail(subject, htmlContent, textContent, toEmail, toName);
+    /* email sending configuration end */
     return user;
   }
 
@@ -31,7 +39,6 @@ export class UserService {
     const toEmail = "imhayatunnabi.pen@gmail.com";
     const toName = "Hayatunnabi Nabil Client";
     await this.mailService.sendEmail(subject, htmlContent, textContent, toEmail, toName);
-
     /* email sending configuration end */
 
     return this.prisma.user.findMany();

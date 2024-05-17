@@ -4,10 +4,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { EmailParams, MailerSend, Recipient, Sender } from 'mailersend';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService, private mailService: MailService) { }
 
   async create(createUserDto: CreateUserDto) {
     const { password, ...userData } = createUserDto;
@@ -24,21 +25,13 @@ export class UserService {
 
   async findAll() {
     /* email sending configuration start */
-    const mailerSend = new MailerSend({
-      apiKey: process.env.MAILERSEND_API_KEY,
-    });
-    const sentFrom = new Sender("MS_hqL1aA@trial-ynrw7gynr5242k8e.mlsender.net", "Hayatunnabi Nabil Nest Prisma Server");
-    const recipients = [
-      new Recipient("imhayatunnabi.pen@gmail.com", "Hayatunnabi Nabil Nest Prisma Client")
-    ];
-    const emailParams = new EmailParams()
-      .setFrom(sentFrom)
-      .setTo(recipients)
-      .setReplyTo(sentFrom)
-      .setSubject("This is a Subject")
-      .setHtml("<strong>This is the HTML content</strong>")
-      .setText("This is the text content");
-    await mailerSend.email.send(emailParams);
+    const subject = "Get All User List Confirmed";
+    const htmlContent = "<strong>This is the HTML content</strong>";
+    const textContent = "This is the text content";
+    const toEmail = "imhayatunnabi.pen@gmail.com";
+    const toName = "Hayatunnabi Nabil Client";
+    await this.mailService.sendEmail(subject, htmlContent, textContent, toEmail, toName);
+
     /* email sending configuration end */
 
     return this.prisma.user.findMany();

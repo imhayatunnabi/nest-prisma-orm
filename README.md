@@ -1,73 +1,100 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+To fully start this project, follow the steps below. These instructions cover setting up the project, installing dependencies, running the application in different modes, and testing.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### Prerequisites
+- Ensure you have [Node.js](https://nodejs.org/) installed (preferably the latest LTS version).
+- Install [npm](https://www.npmjs.com/) (usually included with Node.js).
+- Ensure you have [Prisma](https://www.prisma.io/) CLI installed globally (optional but recommended for database migrations and management).
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Step-by-Step Instructions
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
+#### 1. Clone the Repository
+First, clone the repository to your local machine.
 ```bash
-$ npm install
+git clone <repository-url>
+cd <repository-directory>
 ```
 
-## Running the app
+#### 2. Create `.env` File
+Create a `.env` file in the root directory of your project and add the following environment variables. Replace the placeholder values with your actual configuration.
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```ini
+DATABASE_URL=your_database_url
+MAILERSEND_API_KEY=your_mailersend_api_key
+JWT_SECRET=your_jwt_secret
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+**Example:**
+```ini
+DATABASE_URL=postgresql://user:password@localhost:5432/mydatabase
+MAILERSEND_API_KEY=your_mailersend_api_key
+JWT_SECRET=your_jwt_secret
 ```
 
-## Support
+#### 3. Install Dependencies
+Install all the required dependencies using npm.
+```bash
+npm install
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### 4. Run Database Migrations (Optional)
+If you are using Prisma for database management, run the migrations.
+```bash
+npx prisma migrate dev
+```
 
-## Stay in touch
+#### 5. Running the Application
+You can run the application in different modes:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+**Development Mode:**
+```bash
+npm run start
+```
 
-## License
+**Watch Mode (auto-restart on changes):**
+```bash
+npm run start:dev
+```
 
-Nest is [MIT licensed](LICENSE).
+**Production Mode:**
+```bash
+npm run start:prod
+```
+
+#### 6. Testing
+Run the various tests provided to ensure everything is working as expected.
+
+**Unit Tests:**
+```bash
+npm run test
+```
+
+**End-to-End (e2e) Tests:**
+```bash
+npm run test:e2e
+```
+
+**Test Coverage:**
+```bash
+npm run test:cov
+```
+
+#### 7. Generate JWT Secret (Optional)
+If you need to generate a new JWT secret, you can use the following command:
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'));"
+```
+
+### Additional Information
+
+#### Support
+Nest is an open-source project licensed under the MIT License. You can support the project through sponsorship or backing on [Open Collective](https://opencollective.com/nest#backer) or [Patreon](https://patreon.com/nestjs).
+
+#### Stay in Touch
+- **Author**: [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- **Website**: [NestJS](https://nestjs.com/)
+- **Twitter**: [@nestframework](https://twitter.com/nestframework)
+
+#### License
+This project is licensed under the [MIT License](LICENSE).
+
+By following these instructions, you should be able to set up and start working on your NestJS project efficiently.

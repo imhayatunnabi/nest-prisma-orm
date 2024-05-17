@@ -5,19 +5,39 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { EmailParams, MailerSend, Recipient, Sender } from 'mailersend';
 import { MailService } from 'src/mail/mail.service';
+import { join } from 'path';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService, private mailService: MailService) { }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto, file: Express.Multer.File) {
     const { password, ...userData } = createUserDto;
+    console.log(`1. ${createUserDto.name}`);
+
+    let filePath: string | null = null;
+    console.log(`2. ${filePath}`);
+    if (file) {
+      const uploadDir = join(__dirname, '..', '..', 'uploads');
+      if (!existsSync(uploadDir)) {
+        mkdirSync(uploadDir, { recursive: true });
+      }
+      filePath = join(uploadDir, file.filename);
+      console.log(`3. ${filePath}`);
+      if (file.buffer && file.buffer.length > 0) {
+        writeFileSync(filePath, file.buffer);
+      } else {
+        console.log('File buffer is null or empty.');
+      }      
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await this.prisma.user.create({
       data: {
         ...userData,
         password: hashedPassword,
+        image: filePath,
       },
     });
     /* email sending configuration start */

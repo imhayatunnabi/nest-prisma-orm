@@ -3,11 +3,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { MailService } from 'src/mail/mail.service';
+import { EmailParams, MailerSend, Recipient, Sender } from 'mailersend';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService, private mailService: MailService) { }
+  constructor(private prisma: PrismaService) { }
 
   async create(createUserDto: CreateUserDto) {
     const { password, ...userData } = createUserDto;
@@ -19,20 +19,30 @@ export class UserService {
         password: hashedPassword,
       },
     });
-    await this.mailService.sendUserWelcomeMessage(user);
+    const mailerSend = new MailerSend({
+      apiKey: process.env.MAILERSEND_API_KEY,
+    });
+
+    const sentFrom = new Sender("imhayatunnabi.pen@gmail.com", "Your name");
+
+    const recipients = [
+      new Recipient("imhayatunnabi.pen@gmail.com", "Your Client")
+    ];
+
+    const emailParams = new EmailParams()
+      .setFrom(sentFrom)
+      .setTo(recipients)
+      .setReplyTo(sentFrom)
+      .setSubject("This is a Subject")
+      .setHtml("<strong>This is the HTML content</strong>")
+      .setText("This is the text content");
+
+    await mailerSend.email.send(emailParams);
 
     return user;
   }
 
   async findAll() {
-    const user = await this.prisma.user.findFirst({
-      where: {
-        email: 'imhayatunnabi@gmail.com'
-      }
-    });
-    if (user) {
-      await this.mailService.sendUserWelcomeMessage(user);
-    }
     return this.prisma.user.findMany();
   }
 

@@ -27,7 +27,7 @@ export class UserService {
     const mailerSend = new MailerSend({
       apiKey: process.env.MAILERSEND_API_KEY,
     });
-    const sentFrom = new Sender("imhayatunnabi.pen@gmail.com", "Hayatunnabi Nabil Nest Prisma Server");
+    const sentFrom = new Sender("MS_hqL1aA@trial-ynrw7gynr5242k8e.mlsender.net", "Hayatunnabi Nabil Nest Prisma Server");
     const recipients = [
       new Recipient("imhayatunnabi.pen@gmail.com", "Hayatunnabi Nabil Nest Prisma Client")
     ];

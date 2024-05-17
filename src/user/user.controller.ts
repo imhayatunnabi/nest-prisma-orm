@@ -14,7 +14,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 const storage = diskStorage({
   destination: './uploads',
-  // destination: '../image',
   filename: (req, file, cb) => {
     const uniqueSuffix = `${uuidv4()}${extname(file.originalname)}`;
     cb(null, uniqueSuffix);

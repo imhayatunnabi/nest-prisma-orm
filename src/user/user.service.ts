@@ -1,12 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
-import * as bcrypt from 'bcrypt';
-import { EmailParams, MailerSend, Recipient, Sender } from 'mailersend';
-import { MailService } from 'src/mail/mail.service';
-import { join } from 'path';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { Injectable } from "@nestjs/common";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { PrismaService } from "src/prisma/prisma.service";
+import * as bcrypt from "bcrypt";
+import { MailService } from "src/mail/mail.service";
+import { join } from "path";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
 
 @Injectable()
 export class UserService {

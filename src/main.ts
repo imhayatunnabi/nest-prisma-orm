@@ -21,10 +21,12 @@ async function bootstrap() {
     )
     .build();
 
-  // validation pipes
+  // Validation pipes
   app.useGlobalPipes(new ValidationPipe());
   // Use the ClassSerializerInterceptor to remove a field from the response
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  // Set global prefix Option
+  app.setGlobalPrefix('api');
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

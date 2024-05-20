@@ -1,29 +1,30 @@
 import { PrismaClient } from '@prisma/client';
-
+import * as bcrypt from 'bcrypt'
 // initialize Prisma Client
 const prisma = new PrismaClient();
 
 async function main() {
+    var password = await bcrypt.hash('password', 10);
     // create two dummy users
     const user1 = await prisma.user.upsert({
-        where: { email: 'sabin@adams.com' },
+        where: { email: 'imhayatunnabi@gmail.com' },
         update: {},
         create: {
-            email: 'sabin@adams.com',
-            name: 'Sabin Adams',
+            email: 'imhayatunnabi@gmail.com',
+            name: 'Hayatunnabi Nabil',
             image: 'man.jpg',
-            password: 'password-sabin',
+            password: password,
         },
     });
 
     const user2 = await prisma.user.upsert({
-        where: { email: 'alex@ruheni.com' },
+        where: { email: 'imhayatunnabi.pen@gmail.com' },
         update: {},
         create: {
-            email: 'alex@ruheni.com',
-            name: 'Alex Ruheni',
+            email: 'imhayatunnabi.pen@gmail.com',
+            name: 'Pen Hayatunnabi nabil',
             image: 'man.jpg',
-            password: 'password-alex',
+            password: password,
         },
     });
 
@@ -60,7 +61,9 @@ async function main() {
 
     const post3 = await prisma.article.upsert({
         where: { title: 'Prisma Client Just Became a Lot More Flexible' },
-        update: {},
+        update: {
+            authorId: user2.id,
+        },
         create: {
             title: 'Prisma Client Just Became a Lot More Flexible',
             body: 'Prisma Client extensions provide a powerful new way to add functionality to Prisma in a type-safe manner...',

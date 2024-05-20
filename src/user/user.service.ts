@@ -69,6 +69,7 @@ export class UserService {
       where: { id },
       include: {
         articles: true,
+        role: true,
       },
     });
   }

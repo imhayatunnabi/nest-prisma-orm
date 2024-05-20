@@ -4,6 +4,14 @@ import * as bcrypt from 'bcrypt'
 const prisma = new PrismaClient();
 
 async function main() {
+    // create one static role
+    const role = await prisma.role.upsert({
+        where: { name: 'admin' },
+        update: {},
+        create: {
+            name: 'admin',
+        },
+    });
     var password = await bcrypt.hash('password', 10);
     // create two dummy users
     const user1 = await prisma.user.upsert({
@@ -14,6 +22,7 @@ async function main() {
             name: 'Hayatunnabi Nabil',
             image: 'man.jpg',
             password: password,
+            roleId: role.id,
         },
     });
 
@@ -25,6 +34,7 @@ async function main() {
             name: 'Pen Hayatunnabi nabil',
             image: 'man.jpg',
             password: password,
+            roleId: role.id,
         },
     });
 

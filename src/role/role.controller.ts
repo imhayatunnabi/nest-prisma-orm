@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @Controller('role')
 @ApiTags('Role')
+@UseGuards(JwtGuard)
 export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+  constructor(private roleService: RoleService) {}
 
   @Post()
   create(@Body() createRoleDto: CreateRoleDto) {

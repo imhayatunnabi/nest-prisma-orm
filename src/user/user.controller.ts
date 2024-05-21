@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors
@@ -18,6 +19,8 @@ import { ApiBody, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiTags } from
 import { UserEntity } from "./entities/user.entity";
 import { JwtGuard } from "src/auth/guard/jwt-auth.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { Request } from 'express';
+
 @Controller('user')
 @ApiTags('Users')
 export class UserController {
@@ -35,16 +38,16 @@ export class UserController {
   @Get()
   @UseGuards(JwtGuard)
   @ApiOkResponse({ type: UserEntity, isArray: true })
-  async findAll() {
-    const users = await this.userService.findAll();
+  async findAll(@Req() req: Request) {
+    const users = await this.userService.findAll(req);
     return users.map((user) => new UserEntity(user));
   }
 
   @Get(':id')
   @UseGuards(JwtGuard)
   @ApiOkResponse({ type: UserEntity })
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    return new UserEntity(await this.userService.findOne(id));
+  async findOne(@Param('id', ParseIntPipe) id: number, @Req() req: Request) {
+    return new UserEntity(await this.userService.findOne(id, req));
   }
 
   @Patch(':id')
@@ -53,8 +56,9 @@ export class UserController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
+    @Req() req: Request
   ) {
-    return new UserEntity(await this.userService.update(id, updateUserDto));
+    return new UserEntity(await this.userService.update(id, updateUserDto, req));
   }
 
   @Delete(':id')

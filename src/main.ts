@@ -28,6 +28,8 @@ async function bootstrap() {
   // Set global prefix Option
   app.setGlobalPrefix('api');
 
+  // app.use
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   await app.listen(3000);

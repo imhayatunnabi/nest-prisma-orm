@@ -7,6 +7,7 @@ import { MailService } from "src/mail/mail.service";
 import { extname, join } from "path";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { v4 as uuidv4 } from 'uuid';
+import { Request } from "express";
 
 @Injectable()
 export class UserService {
@@ -14,9 +15,10 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto, file: Express.Multer.File) {
     const { password, ...userData } = createUserDto;
-    
+
     let filePath: string | null = null;
     let uniqueFileName: string | null = null;
+
     if (file) {
       const uploadDir = 'uploads';
       if (!existsSync(uploadDir)) {
@@ -41,63 +43,67 @@ export class UserService {
         image: uniqueFileName,
       },
     });
-    /* email sending configuration start */
+
+    // Email sending configuration
     const subject = "Your account created successfully";
     const htmlContent = "<strong>This is the HTML content</strong>";
     const textContent = "This is the text content";
     const toEmail = user.email;
     const toName = user.name;
     await this.mailService.sendEmail(subject, htmlContent, textContent, toEmail, toName);
-    /* email sending configuration end */
+
     return user;
   }
 
-  async findAll() {
-    /* email sending configuration start */
+  async findAll(req: Request) {
+    // Email sending configuration
     const subject = "Get All User List Confirmed";
     const htmlContent = "<strong>This is the HTML content</strong>";
     const textContent = "This is the text content";
     const toEmail = "imhayatunnabi.pen@gmail.com";
     const toName = "Hayatunnabi Nabil Client";
     await this.mailService.sendEmail(subject, htmlContent, textContent, toEmail, toName);
-    /* email sending configuration end */
 
-    return this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany();
+    return users.map(user => ({
+      ...user,
+      image: user.image ? `${req.protocol}://${req.get('host')}/${user.image}` : null
+    }));
   }
 
-
-  findOne(id: number) {
-    return this.prisma.user.findUnique({
+  async findOne(id: number, req: Request) {
+    const user = await this.prisma.user.findUnique({
       where: { id },
       include: {
         articles: true,
         role: true,
       },
     });
+    if (!user) return null;
+    return {
+      ...user,
+      image: user.image ? `${req.protocol}://${req.get('host')}/${user.image}` : null
+    };
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto, req: Request) {
     const { password, ...userData } = updateUserDto;
+    let hashedPassword;
     if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      await this.prisma.user.update({
-        where: { id },
-        data: {
-          ...userData,
-          password: hashedPassword,
-        },
-      });
-    } else {
-      await this.prisma.user.update({
-        where: { id },
-        data: userData,
-      });
+      hashedPassword = await bcrypt.hash(password, 10);
     }
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        ...userData,
+        password: hashedPassword,
+      },
+    });
 
-    return this.findOne(id);
+    return this.findOne(id, req);
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return this.prisma.user.delete({ where: { id } });
   }
 }

@@ -18,18 +18,6 @@ import { ApiBody, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiTags } from
 import { UserEntity } from "./entities/user.entity";
 import { JwtGuard } from "src/auth/guard/jwt-auth.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
-import { extname } from "path";
-import { v4 as uuidv4 } from "uuid";
-
-
-const storage = diskStorage({
-  destination: './uploads',
-  filename: (req, file, cb) => {
-    const uniqueSuffix = `${uuidv4()}${extname(file.originalname)}`;
-    cb(null, uniqueSuffix);
-  },
-});
 @Controller('user')
 @ApiTags('Users')
 export class UserController {
@@ -37,11 +25,11 @@ export class UserController {
 
   @Post()
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('image', { storage }))
+  @UseInterceptors(FileInterceptor('image'))
   @ApiCreatedResponse({ type: UserEntity })
   @ApiBody({type: CreateUserDto})
-  async create(@Body() createUserDto: CreateUserDto, @UploadedFile() file: Express.Multer.File) {
-    return new UserEntity(await this.userService.create(createUserDto, file));
+  async create(@Body() createUserDto: CreateUserDto, @UploadedFile() image: Express.Multer.File) {
+    return new UserEntity(await this.userService.create(createUserDto, image));
   }
 
   @Get()

@@ -4,8 +4,9 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from "bcrypt";
 import { MailService } from "src/mail/mail.service";
-import { join } from "path";
+import { extname, join } from "path";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserService {
@@ -13,30 +14,31 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto, file: Express.Multer.File) {
     const { password, ...userData } = createUserDto;
-    console.log(`1. ${createUserDto.name}`);
-
+    
     let filePath: string | null = null;
-    console.log(`2. ${filePath}`);
+    let uniqueFileName: string | null = null;
     if (file) {
-      const uploadDir = join(__dirname, '..', '..', 'uploads');
+      const uploadDir = 'uploads';
       if (!existsSync(uploadDir)) {
         mkdirSync(uploadDir, { recursive: true });
       }
-      filePath = join(uploadDir, file.filename);
-      console.log(`3. ${filePath}`);
+      const fileExtension = extname(file.originalname);
+      uniqueFileName = `${uuidv4()}${fileExtension}`;
+      filePath = join(uploadDir, uniqueFileName);
       if (file.buffer && file.buffer.length > 0) {
         writeFileSync(filePath, file.buffer);
       } else {
         console.log('File buffer is null or empty.');
-      }      
+      }
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await this.prisma.user.create({
       data: {
         ...userData,
         password: hashedPassword,
-        image: filePath,
+        image: uniqueFileName,
       },
     });
     /* email sending configuration start */

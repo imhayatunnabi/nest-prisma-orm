@@ -53,6 +53,12 @@ npx prisma migrate dev
 
 #### 5. Running the Application
 
+**Run Database Seed:**
+```bash
+npx prisma db seed
+```
+This command will populate your database with initial seed data defined in `prisma/seed.ts`.
+
 You can run the application in different modes:
 
 **Development Mode:**

@@ -1,17 +1,20 @@
-import { Injectable } from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
-import { PrismaService } from "src/prisma/prisma.service";
-import * as bcrypt from "bcrypt";
-import { MailService } from "src/mail/mail.service";
-import { extname, join } from "path";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
+import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
+import { MailService } from 'src/mail/mail.service';
+import { extname, join } from 'path';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { Request } from "express";
+import { Request } from 'express';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService, private mailService: MailService) { }
+  constructor(
+    private prisma: PrismaService,
+    private mailService: MailService,
+  ) {}
 
   async create(createUserDto: CreateUserDto, file: Express.Multer.File) {
     const { password, ...userData } = createUserDto;
@@ -45,29 +48,43 @@ export class UserService {
     });
 
     // Email sending configuration
-    const subject = "Your account created successfully";
-    const htmlContent = "<strong>This is the HTML content</strong>";
-    const textContent = "This is the text content";
+    const subject = 'Your account created successfully';
+    const htmlContent = '<strong>This is the HTML content</strong>';
+    const textContent = 'This is the text content';
     const toEmail = user.email;
     const toName = user.name;
-    await this.mailService.sendEmail(subject, htmlContent, textContent, toEmail, toName);
+    await this.mailService.sendEmail(
+      subject,
+      htmlContent,
+      textContent,
+      toEmail,
+      toName,
+    );
 
     return user;
   }
 
   async findAll(req: Request) {
     // Email sending configuration
-    const subject = "Get All User List Confirmed";
-    const htmlContent = "<strong>This is the HTML content</strong>";
-    const textContent = "This is the text content";
-    const toEmail = "imhayatunnabi.pen@gmail.com";
-    const toName = "Hayatunnabi Nabil Client";
-    await this.mailService.sendEmail(subject, htmlContent, textContent, toEmail, toName);
+    const subject = 'Get All User List Confirmed';
+    const htmlContent = '<strong>This is the HTML content</strong>';
+    const textContent = 'This is the text content';
+    const toEmail = 'imhayatunnabi.pen@gmail.com';
+    const toName = 'Hayatunnabi Nabil Client';
+    await this.mailService.sendEmail(
+      subject,
+      htmlContent,
+      textContent,
+      toEmail,
+      toName,
+    );
 
     const users = await this.prisma.user.findMany();
-    return users.map(user => ({
+    return users.map((user) => ({
       ...user,
-      image: user.image ? `${req.protocol}://${req.get('host')}/${user.image}` : null
+      image: user.image
+        ? `${req.protocol}://${req.get('host')}/${user.image}`
+        : null,
     }));
   }
 
@@ -82,7 +99,9 @@ export class UserService {
     if (!user) return null;
     return {
       ...user,
-      image: user.image ? `${req.protocol}://${req.get('host')}/${user.image}` : null
+      image: user.image
+        ? `${req.protocol}://${req.get('host')}/${user.image}`
+        : null,
     };
   }
 

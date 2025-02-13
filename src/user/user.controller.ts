@@ -10,29 +10,39 @@ import {
   Req,
   UploadedFile,
   UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
-import { UserService } from "./user.service";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
-import { ApiBody, ApiConsumes, ApiCreatedResponse, ApiOkResponse, ApiTags } from "@nestjs/swagger";
-import { UserEntity } from "./entities/user.entity";
-import { JwtGuard } from "src/auth/guard/jwt-auth.guard";
-import { FileInterceptor } from "@nestjs/platform-express";
+  UseInterceptors,
+} from '@nestjs/common';
+import { UserService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { UserEntity } from './entities/user.entity';
+import { JwtGuard } from 'src/auth/guard/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
-import { User } from "src/auth/user/user.decorator";
+import { User } from 'src/auth/user/user.decorator';
 
 @Controller('user')
 @ApiTags('Users')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
   @ApiCreatedResponse({ type: UserEntity })
   @ApiBody({ type: CreateUserDto })
-  async create(@Body() createUserDto: CreateUserDto, @UploadedFile() image: Express.Multer.File, @User() user: any) {
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @UploadedFile() image: Express.Multer.File,
+    @User() user: any,
+  ) {
     return user;
     return new UserEntity(await this.userService.create(createUserDto, image));
   }
@@ -58,9 +68,11 @@ export class UserController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
-    @Req() req: Request
+    @Req() req: Request,
   ) {
-    return new UserEntity(await this.userService.update(id, updateUserDto, req));
+    return new UserEntity(
+      await this.userService.update(id, updateUserDto, req),
+    );
   }
 
   @Delete(':id')

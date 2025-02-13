@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -10,7 +20,7 @@ import { RoleEntity } from './entities/role.entity';
 @ApiTags('Role')
 @UseGuards(JwtGuard)
 export class RoleController {
-  constructor(private roleService: RoleService) { }
+  constructor(private roleService: RoleService) {}
 
   @Post()
   create(@Body() createRoleDto: CreateRoleDto) {
@@ -32,7 +42,10 @@ export class RoleController {
 
   @Patch(':id')
   @ApiOkResponse({ type: RoleEntity })
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateRoleDto: UpdateRoleDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateRoleDto: UpdateRoleDto,
+  ) {
     return this.roleService.update(+id, updateRoleDto);
   }
 

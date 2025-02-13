@@ -5,12 +5,12 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class RoleService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   create(createRoleDto: CreateRoleDto) {
     return this.prisma.role.create({
       data: {
-        ...createRoleDto
-      }
+        ...createRoleDto,
+      },
     });
   }
 
@@ -30,13 +30,13 @@ export class RoleService {
   async update(id: number, updateRoleDto: UpdateRoleDto) {
     return await this.prisma.role.update({
       where: { id },
-      data: updateRoleDto
+      data: updateRoleDto,
     });
   }
 
   remove(id: number) {
     return this.prisma.role.delete({
-      where: { id }
+      where: { id },
     });
   }
 }

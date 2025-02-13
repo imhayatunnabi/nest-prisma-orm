@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { CreateArticleDto } from "./dto/create-article.dto";
-import { UpdateArticleDto } from "./dto/update-article.dto";
-import { PrismaService } from "src/prisma/prisma.service";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateArticleDto } from './dto/create-article.dto';
+import { UpdateArticleDto } from './dto/update-article.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ArticleService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
   create(createArticleDto: CreateArticleDto) {
-    return this.prisma.article.create({ data: createArticleDto })
+    return this.prisma.article.create({ data: createArticleDto });
   }
 
   findAll() {
@@ -32,7 +32,10 @@ export class ArticleService {
     if (!article) {
       throw new NotFoundException(`Article with ${id} does not exist.`);
     }
-    return this.prisma.article.update({ where: { id }, data: updateArticleDto });
+    return this.prisma.article.update({
+      where: { id },
+      data: updateArticleDto,
+    });
   }
 
   async remove(id: number) {

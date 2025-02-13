@@ -1,5 +1,5 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { EmailParams, MailerSend, Recipient, Sender } from "mailersend";
+import { Injectable, Logger } from '@nestjs/common';
+import { EmailParams, MailerSend, Recipient, Sender } from 'mailersend';
 
 @Injectable()
 export class MailService {
@@ -15,9 +15,18 @@ export class MailService {
     this.defaultSenderName = process.env.EMAIL_SENDER_NAME;
   }
 
-  async sendEmail(subject: string, htmlContent: string, textContent: string, toEmail: string, toName: string) {
+  async sendEmail(
+    subject: string,
+    htmlContent: string,
+    textContent: string,
+    toEmail: string,
+    toName: string,
+  ) {
     try {
-      const sentFrom = new Sender(this.defaultSenderEmail, this.defaultSenderName);
+      const sentFrom = new Sender(
+        this.defaultSenderEmail,
+        this.defaultSenderName,
+      );
       const recipients = [new Recipient(toEmail, toName)];
 
       const emailParams = new EmailParams()

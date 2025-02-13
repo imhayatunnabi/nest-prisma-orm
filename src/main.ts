@@ -1,8 +1,8 @@
-import { NestFactory, Reflector } from "@nestjs/core";
-import { AppModule } from "./app.module";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
-import * as process from "node:process";
+import { NestFactory, Reflector } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import * as process from 'node:process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,16 +10,14 @@ async function bootstrap() {
     .setTitle('Nest Js Prisma API Documentation')
     .setDescription('Nest Js Prima API Documentation With Swagger')
     .setVersion('0.0.1')
-    .addBearerAuth(
-      {
-        description: `[just text field] Please enter token in following format: Bearer <JWT>`,
-        name: 'Authorization',
-        bearerFormat: 'Bearer',
-        scheme: 'Bearer',
-        type: 'http',
-        in: 'Header'
-      },
-    )
+    .addBearerAuth({
+      description: `[just text field] Please enter token in following format: Bearer <JWT>`,
+      name: 'Authorization',
+      bearerFormat: 'Bearer',
+      scheme: 'Bearer',
+      type: 'http',
+      in: 'Header',
+    })
     .build();
 
   // Validation pipes

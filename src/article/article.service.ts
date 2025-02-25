@@ -45,4 +45,28 @@ export class ArticleService {
     }
     return this.prisma.article.delete({ where: { id } });
   }
+
+  async searchArticles(searchTerm: string) {
+    return this.prisma.article.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: searchTerm,
+            },
+          },
+          {
+            description: {
+              contains: searchTerm,
+            },
+          },
+          {
+            body: {
+              contains: searchTerm,
+            },
+          },
+        ],
+      },
+    });
+  }
 }

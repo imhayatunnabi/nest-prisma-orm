@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -53,5 +54,10 @@ export class ArticleController {
   @ApiOkResponse({ type: ArticleEntity })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.articleService.remove(+id);
+  }
+
+  @Get('search')
+  search(@Query('q') query: string) {
+    return this.articleService.searchArticles(query);
   }
 }

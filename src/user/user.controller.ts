@@ -26,7 +26,7 @@ import { UserEntity } from './entities/user.entity';
 import { JwtGuard } from 'src/auth/guard/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
-import { User } from 'src/auth/user/user.decorator';
+// import { User } from 'src/auth/user/user.decorator';
 
 @Controller('user')
 @ApiTags('Users')
@@ -41,9 +41,9 @@ export class UserController {
   async create(
     @Body() createUserDto: CreateUserDto,
     @UploadedFile() image: Express.Multer.File,
-    @User() user: any,
+    // @User() user: any,
   ) {
-    return user;
+    // return user;
     return new UserEntity(await this.userService.create(createUserDto, image));
   }
 

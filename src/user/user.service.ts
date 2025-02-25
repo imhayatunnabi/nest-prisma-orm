@@ -48,18 +48,18 @@ export class UserService {
     });
 
     // Email sending configuration
-    const subject = 'Your account created successfully';
-    const htmlContent = '<strong>This is the HTML content</strong>';
-    const textContent = 'This is the text content';
-    const toEmail = user.email;
-    const toName = user.name;
-    await this.mailService.sendEmail(
-      subject,
-      htmlContent,
-      textContent,
-      toEmail,
-      toName,
-    );
+    // const subject = 'Your account created successfully';
+    // const htmlContent = '<strong>This is the HTML content</strong>';
+    // const textContent = 'This is the text content';
+    // const toEmail = user.email;
+    // const toName = user.name;
+    // await this.mailService.sendEmail(
+    //   subject,
+    //   htmlContent,
+    //   textContent,
+    //   toEmail,
+    //   toName,
+    // );
 
     return user;
   }
@@ -111,7 +111,7 @@ export class UserService {
     if (password) {
       hashedPassword = await bcrypt.hash(password, 10);
     }
-    const updatedUser = await this.prisma.user.update({
+    await this.prisma.user.update({
       where: { id },
       data: {
         ...userData,

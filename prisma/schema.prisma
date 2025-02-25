@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
 }
 
 datasource db {
@@ -16,7 +17,7 @@ datasource db {
 
 model Article {
   id          Int      @id @default(autoincrement())
-  author      User?    @relation(fields: [authorId], references: [id])
+  author      User?    @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   authorId    Int?
   title       String   @unique
   description String?
@@ -24,6 +25,10 @@ model Article {
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@fulltext([title])
+  @@fulltext([description])
+  @@fulltext([title, description, body])
 }
 
 model User {
@@ -35,14 +40,14 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   articles  Article[]
-  role      Role?    @relation(fields: [roleId], references: [id])
+  role      Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   roleId    Int?
 }
 
 model Role {
-  id        Int       @id @default(autoincrement())
-  name      String?   @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  users  User[]
+  id        Int      @id @default(autoincrement())
+  name      String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
 }
